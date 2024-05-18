@@ -5,7 +5,7 @@ namespace App\Service\Product;
 use App\Models\Product;
 use App\Repository\Product\ProductRepositoryInterface;
 
-class CheckStoreProduct {
+class CheckQuntityProduct {
 
     private $productRepository;
 
@@ -14,11 +14,11 @@ class CheckStoreProduct {
         $this->productRepository = $productRepository;
     }
 
-    public function handel($userId, $productId): bool
+    public function handel($productId, $quntity): bool
     {
        $product = $this->productRepository->find($productId);
 
-        if($product->store == 0)
+        if($product->quntity < $quntity)
             return false;
 
         return true;

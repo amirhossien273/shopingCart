@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('price');
             $table->integer('quntity');
             $table->timestamps();
+            $table->unique(['product_id', 'cart_id']);
         });
     }
 

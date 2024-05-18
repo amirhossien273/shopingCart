@@ -169,6 +169,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\RepositoryProvider::class,
+        App\Providers\GenerateCartProvider::class,
+        App\Providers\ObserverProvider::class,
     ])->toArray(),
 
     /*

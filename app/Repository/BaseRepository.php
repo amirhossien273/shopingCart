@@ -49,4 +49,9 @@ Abstract class BaseRepository implements EloquentRepositoryInterface
     {
         return $this->model->where('id', $id)->update($attributes);
     }
+
+    public function delete($id)
+    {
+        $this->model->where('id', $id)->delete();    
+    }
 }

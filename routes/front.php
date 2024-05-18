@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Front\CartItmController;
+use App\Http\Controllers\Front\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,11 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('product/{productId}', [ProductController::class, 'show'])->name('cart.show');
 
 Route::get('cart', [CartItmController::class, 'index'])->name('cart.index');
-Route::middleware('')->post('cart', [CartItmController::class, 'store'])->name('cart.post');
+Route::middleware('checkQuntityProduct')->post('cart', [CartItmController::class, 'store'])->name('cart.post');
 Route::put('cart/{cartId}', [CartItmController::class, 'updated'])->name('cart.put');
-// Route::dispatch('cart/{cartId}', [CartItmController::class, 'deleted']);
+Route::delete('cart/{cartId}', [CartItmController::class, 'deleted'])->name('cart.delete');

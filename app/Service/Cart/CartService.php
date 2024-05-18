@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\User;
 use App\Repository\Cart\CartRepositoryInterface;
 use App\Repository\CartItem\CartItemRepositoryInterface;
+use Illuminate\Http\Request;
 
 class CartService {
 
@@ -18,34 +19,47 @@ class CartService {
         $this->cartItmeRepository = $cartItemRepository;
     }
 
-    public function generateCart(User $user)
+    public function generateCart(User $user, $productId)
     {
-        if(!$this->checkCart($user))
+        if(!$this->checkCart($user->id))
            $this->createCart($user);
     }
 
-    public function checkCart(User $user): bool
+    public function checkCart($userId): bool
     {
-        return true;
+        if($this->cartRepository->findCartByUserIdIsOpen($userId))
+          return true;
+        return false;
     }
 
     public function createCart(User $user)
     {
+        $this->cartRepository->create([
+            "user_id" => $user->id,
+            "name"    => $user->name,
+            "email"   => $user->email,
+            "status" => "open"
+        ]);
+    }
+
+    public function showCart($userId)
+    {
+       return $this->cartRepository->findCartByUserIdIsOpen($userId);
+    }
+
+    public function addItem(User $user, Request $request)
+    {
+        $cart = $this->showCart($user);
+        return  $this->cartItmeRepository->create([
+            "cart_id"    => $cart->id,
+            "product_id" => $request->product_id,
+            "quntity"    => $request->quntity
+        ]);
 
     }
 
-    public function showCart($user)
+    public function removeItem($cartItemId)
     {
-        
-    }
-
-    public function addItem(User $user, Cart $cart)
-    {
-        
-    }
-
-    public function removeItem(User $user, Cart $cart)
-    {
-        
+        $this->cartItmeRepository->delete($cartItemId);
     }
 }

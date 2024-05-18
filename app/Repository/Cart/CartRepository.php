@@ -32,4 +32,9 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface
       return $this->model->insert($CartDTO);
    }
 
+   public function findCartByUserIdIsOpen($userId)
+   {
+     return $this->model->where('user_id', $userId)->where('status', "open")->first();
+   }
+
 }

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Service\Cart\CartService;
-use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route; 
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
 class GenerateCartProvider extends ServiceProvider
@@ -19,13 +21,11 @@ class GenerateCartProvider extends ServiceProvider
     /**
      * Bootstrap services.
      */
-    public function boot(CartService $cartService): void
+    public function boot(Request $request, CartService $cartService): void
     {
-        $routesToCheck = ['cart'];
-
-        if (in_array(Route::currentRouteName(), $routesToCheck)) {
+        if ($request->is('cart')) {
             
-            $cartService->generateCart(auth()->user());    
+            $cartService->generateCart(User::find(1), $request->product_id);    
         }    
     }
 }

@@ -17,7 +17,7 @@ class ProductController extends Controller
     public function store(ProductStoreRequest $request, CreateProductService $createProduct) 
     {
         $createProduct->handel($request);
-        return redirect()->with("success", "insert successfully");
+        return redirect()->back()->with("success", "insert successfully");
     }
 
     /**

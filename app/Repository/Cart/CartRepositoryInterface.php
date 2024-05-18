@@ -10,4 +10,7 @@ interface CartRepositoryInterface
    public function all(): Collection;
 
    public function insert(array $CartDTO);
+
+   public function findCartByUserIdIsOpen($userId);
+   
 }
