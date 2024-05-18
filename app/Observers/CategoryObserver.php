@@ -4,49 +4,43 @@ namespace App\Observers;
 
 use App\Models\Category;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 
 class CategoryObserver
 {
-        /**
-     * Handle the Category "created" event.
+    /**
+     * Handle the category "created" event.
      *
      * @param  \App\Models\Category  $category
      * @return void
      */
     public function created(Category $category)
     {
-        $this->clearCache();
+        // Store category data in Redis
+        Redis::set('category:'.$category->id, $category->toJson());
     }
 
     /**
-     * Handle the Category "updated" event.
+     * Handle the category "updated" event.
      *
      * @param  \App\Models\Category  $category
      * @return void
      */
     public function updated(Category $category)
     {
-        $this->clearCache();
+        // Update category data in Redis
+        Redis::set('category:'.$category->id, $category->toJson());
     }
 
     /**
-     * Handle the Category "deleted" event.
+     * Handle the category "deleted" event.
      *
      * @param  \App\Models\Category  $category
      * @return void
      */
     public function deleted(Category $category)
     {
-        $this->clearCache();
-    }
-
-    /**
-     * Clear the cache for categories.
-     *
-     * @return void
-     */
-    protected function clearCache()
-    {
-        Cache::forget('categories');
+        // Delete category data from Redis
+        Redis::del('category:'.$category->id);
     }
 }
